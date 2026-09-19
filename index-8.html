@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tohar Lahanga Utha Dem — Desi Remote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#ffd3ea; --bg2:#c9e2ff; --ink:#3a2a5e; --ink-soft:#6a5a8c;
+  --card:rgba(255,255,255,.72); --line:rgba(58,42,94,.14);
+  --pink:#ff5fa8; --blue:#4d9bff; --gold:#f4bf45;
+  --screen:#1d1440; --screen-2:#2b1d63;
+  --shadow:rgba(90,60,160,.28);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg1:#3b1140; --bg2:#0f2352; --ink:#ffe8f4; --ink-soft:#c9b6e6;
+    --card:rgba(22,18,52,.62); --line:rgba(255,232,244,.16);
+    --shadow:rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg1:#3b1140; --bg2:#0f2352; --ink:#ffe8f4; --ink-soft:#c9b6e6;
+  --card:rgba(22,18,52,.62); --line:rgba(255,232,244,.16);
+  --shadow:rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  min-height:100vh; color:var(--ink);
+  font-family:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  background:linear-gradient(160deg,var(--bg1),var(--bg2)) fixed;
+  background-color:var(--bg2);
+}
+.wrap{max-width:1020px;margin:0 auto;padding:22px 16px 40px}
+header{text-align:center;margin-bottom:18px}
+h1{
+  font-family:"Rozha One",Georgia,serif; font-weight:400;
+  font-size:clamp(28px,7vw,52px); line-height:1.05; margin:0;
+  background:linear-gradient(90deg,var(--pink),var(--blue));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.sub{margin:6px 0 0;font-size:clamp(15px,3.6vw,19px);color:var(--ink-soft);font-weight:600}
+.warn{
+  display:inline-block;margin-top:10px;padding:6px 14px;border-radius:999px;
+  background:var(--card);border:1px dashed var(--line);font-size:13px;max-width:560px;
+}
+.grid{display:grid;gap:22px;grid-template-columns:1fr;align-items:start}
+@media(min-width:860px){.grid{grid-template-columns:1.15fr .85fr}}
+
+/* ---------- TV screen ---------- */
+.tv{
+  position:relative;border-radius:26px;padding:12px;
+  background:linear-gradient(145deg,#ff9fd0,#7db8ff);
+  box-shadow:0 18px 40px var(--shadow);
+}
+.screen{
+  position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/4.6;
+  background:radial-gradient(circle at 50% 30%,var(--screen-2),var(--screen) 70%);
+}
+.screen svg.girl{position:absolute;inset:0;width:100%;height:100%;transition:opacity .4s}
+.off-msg{
+  position:absolute;inset:0;display:grid;place-items:center;text-align:center;
+  color:#c8b8ff;font-weight:700;font-size:18px;padding:20px;transition:opacity .4s;
+}
+.off-msg small{display:block;font-weight:500;opacity:.8;margin-top:4px}
+.screen.off svg.girl{opacity:0}
+.screen:not(.off) .off-msg{opacity:0;pointer-events:none}
+.status{
+  position:absolute;left:10px;right:10px;bottom:10px;padding:8px 12px;border-radius:12px;
+  background:rgba(20,12,50,.72);color:#fff;font-weight:700;font-size:15px;text-align:center;
+  backdrop-filter:blur(4px);
+}
+.screen.off .status{display:none}
+.counter{
+  position:absolute;top:10px;right:10px;padding:4px 12px;border-radius:999px;
+  background:rgba(20,12,50,.72);color:var(--gold);font-weight:800;font-size:18px;
+}
+.screen.off .counter{display:none}
+.coin{
+  position:absolute;top:-30px;width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff2a8,var(--gold) 55%,#c98d15);
+  color:#8a5a00;font-weight:800;font-size:14px;display:grid;place-items:center;
+  animation:fall 1.9s cubic-bezier(.4,.1,.6,1) forwards;pointer-events:none;
+}
+@keyframes fall{to{transform:translateY(520px) rotate(540deg);opacity:.9}}
+.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+/* girl idle sway */
+.sway{transform-origin:150px 420px;animation:sway 3.2s ease-in-out infinite alternate}
+@keyframes sway{from{transform:rotate(-1.3deg)}to{transform:rotate(1.3deg)}}
+.flutter{transform-origin:114px 134px;animation:flutter 2.6s ease-in-out infinite alternate}
+@keyframes flutter{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+.spark{animation:tw 2.4s ease-in-out infinite}
+.spark:nth-child(2n){animation-delay:.8s}.spark:nth-child(3n){animation-delay:1.5s}
+@keyframes tw{0%,100%{opacity:.2}50%{opacity:1}}
+
+/* ---------- Remote ---------- */
+.remote{
+  position:relative;margin:0 auto;width:min(300px,100%);padding:26px 22px 24px;border-radius:44px 44px 52px 52px;
+  background:linear-gradient(170deg,#ff9bd0 0%,#b9a4ff 50%,#6fb1ff 100%);
+  box-shadow:inset 0 3px 8px rgba(255,255,255,.7),inset 0 -8px 16px rgba(60,40,140,.25),0 20px 40px var(--shadow);
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.led{
+  width:46px;height:8px;border-radius:6px;background:#3a2a5e;position:relative;
+}
+.led::after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;
+  background:#ff3b6b;transform:translate(-50%,-50%);opacity:.25;transition:opacity .1s}
+.led.pulse::after{opacity:1;box-shadow:0 0 14px 6px #ff3b6b}
+.rbrand{font-weight:800;font-size:13px;color:#3a2a5e;letter-spacing:.02em;text-align:center;line-height:1.1}
+button{font:inherit;cursor:pointer;border:0;color:#fff;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn{
+  width:100%;border-radius:22px;padding:12px 10px;font-weight:800;font-size:17px;line-height:1.1;
+  box-shadow:0 6px 0 rgba(30,10,80,.35),0 10px 18px rgba(30,10,80,.25);
+  transition:transform .08s, box-shadow .08s, filter .2s;
+}
+.btn:active,.btn.down{transform:translateY(5px);box-shadow:0 1px 0 rgba(30,10,80,.35),0 3px 8px rgba(30,10,80,.25)}
+.btn small{display:block;font-weight:600;font-size:12px;opacity:.9;margin-top:3px}
+.b-power{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff7d93,#e0244c 65%);font-size:26px;padding:0}
+.b-power.on{box-shadow:0 0 0 4px #fff,0 0 22px 6px #ff5c7d,0 6px 0 rgba(30,10,80,.35)}
+.b-action{background:linear-gradient(#37d67a,#12a557);font-size:20px;padding:16px 10px}
+.b-react{background:linear-gradient(#5aa8ff,#2f6fe0)}
+.b-money{background:linear-gradient(#ffd45c,#eba412);color:#5a3800}
+.btn:disabled{filter:grayscale(.85) brightness(.85);cursor:not-allowed}
+.btn.busy{filter:brightness(.9)}
+.toast{
+  min-height:20px;font-size:13px;font-weight:700;color:#3a2a5e;text-align:center;
+}
+
+/* ---------- Sound setup ---------- */
+details{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 16px}
+summary{cursor:pointer;font-weight:800}
+.slot{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:12px}
+.slot label{font-weight:700;min-width:170px}
+.slot input{max-width:100%;font:inherit;font-size:13px;color:var(--ink)}
+.ok{color:#12a557;font-weight:800;font-size:13px}
+.hint{font-size:13px;color:var(--ink-soft);margin:10px 0 0}
+footer{text-align:center;margin-top:26px;font-size:13px;color:var(--ink-soft);font-weight:600}
+footer b{color:var(--ink)}
+
+@media (prefers-reduced-motion: reduce){
+  .sway,.flutter,.spark{animation:none}
+  .coin{animation-duration:.01s}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>TOHAR LAHANGA UTHA DEM</h1>
+    <p class="sub">Remote dabao… reaction dekho!</p>
+    <span class="warn">⚠️ Sirf COMEDY ke liye. Battery khatam ho sakti hai, comedy nahi 😂</span>
+  </header>
+
+  <div class="grid">
+    <!-- TV -->
+    <section aria-label="Screen">
+      <div class="tv">
+        <div class="screen off" id="screen">
+          <div class="off-msg"><div>📺 Remote connected…<small>Pehle laal POWER button dabao</small></div></div>
+
+          <svg class="girl" viewBox="0 0 300 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Animated cartoon girl in a pink and blue lehenga">
+            <defs>
+              <linearGradient id="skirtG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ff7ab8"/><stop offset=".55" stop-color="#b98cff"/><stop offset="1" stop-color="#5f8bff"/>
+              </linearGradient>
+              <linearGradient id="dupG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ff8cc6" stop-opacity=".92"/><stop offset="1" stop-color="#7fb4ff" stop-opacity=".85"/>
+              </linearGradient>
+              <linearGradient id="choliG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4d9bff"/><stop offset="1" stop-color="#7b6bff"/>
+              </linearGradient>
+              <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse">
+                <circle cx="4" cy="4" r="1.8" fill="#ffe08a" opacity=".85"/>
+                <circle cx="12" cy="12" r="1.4" fill="#fff" opacity=".7"/>
+              </pattern>
+              <radialGradient id="glow" cx=".5" cy=".55" r=".55">
+                <stop offset="0" stop-color="#ff8fd0" stop-opacity=".55"/><stop offset="1" stop-color="#ff8fd0" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <rect width="300" height="440" fill="url(#glow)"/>
+            <g fill="#fff">
+              <circle class="spark" cx="34" cy="60" r="2.4"/><circle class="spark" cx="268" cy="90" r="2"/>
+              <circle class="spark" cx="50" cy="210" r="1.8"/><circle class="spark" cx="262" cy="230" r="2.6"/>
+              <circle class="spark" cx="22" cy="330" r="2"/><circle class="spark" cx="280" cy="340" r="1.8"/>
+            </g>
+            <ellipse cx="150" cy="428" rx="92" ry="8" fill="#000" opacity=".28"/>
+
+            <g class="sway" id="girl">
+              <!-- hair back + braid -->
+              <ellipse cx="150" cy="84" rx="42" ry="44" fill="#2a1638"/>
+              <path d="M186 96 Q214 150 200 236 Q196 262 190 280" stroke="#2a1638" stroke-width="15" fill="none" stroke-linecap="round"/>
+              <circle cx="190" cy="282" r="7" fill="#ff5fa8"/>
+
+              <!-- legs / feet -->
+              <rect x="131" y="388" width="12" height="24" rx="5" fill="#f2b892"/>
+              <rect x="157" y="388" width="12" height="24" rx="5" fill="#f2b892"/>
+              <rect x="130" y="402" width="14" height="4" rx="2" fill="#f4bf45"/>
+              <rect x="156" y="402" width="14" height="4" rx="2" fill="#f4bf45"/>
+              <ellipse cx="136" cy="416" rx="16" ry="7" fill="#f4bf45"/>
+              <ellipse cx="164" cy="416" rx="16" ry="7" fill="#f4bf45"/>
+
+              <!-- petticoat (modest under-layer) -->
+              <path id="petti" d="" fill="#fff6fb" stroke="#ffc0e0" stroke-width="1.5"/>
+
+              <!-- neck & head -->
+              <rect x="141" y="108" width="18" height="26" rx="8" fill="#f2b892"/>
+              <circle cx="150" cy="80" r="34" fill="#f7c4a0"/>
+              <!-- hair front -->
+              <path d="M115 78 Q118 42 150 40 Q182 42 185 78 Q170 56 150 56 Q130 56 115 78Z" fill="#2a1638"/>
+              <path d="M150 40 L150 56" stroke="#ff5fa8" stroke-width="2.2"/>
+              <path d="M150 56 L150 64" stroke="#f4bf45" stroke-width="2"/><circle cx="150" cy="67" r="3.4" fill="#f4bf45"/>
+              <!-- face -->
+              <ellipse cx="138" cy="84" rx="4.6" ry="5.6" fill="#2a1638"/><ellipse cx="162" cy="84" rx="4.6" ry="5.6" fill="#2a1638"/>
+              <circle cx="139.5" cy="82" r="1.6" fill="#fff"/><circle cx="163.5" cy="82" r="1.6" fill="#fff"/>
+              <path d="M130 75 Q138 70 146 75" stroke="#2a1638" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M154 75 Q162 70 170 75" stroke="#2a1638" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <circle cx="150" cy="73" r="2.6" fill="#e0244c"/>
+              <ellipse cx="128" cy="96" rx="6" ry="3.6" fill="#ff8fb0" opacity=".6"/><ellipse cx="172" cy="96" rx="6" ry="3.6" fill="#ff8fb0" opacity=".6"/>
+              <path id="smile" d="M141 100 Q150 108 159 100" stroke="#c2264d" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+              <circle cx="116" cy="92" r="4" fill="#f4bf45"/><circle cx="184" cy="92" r="4" fill="#f4bf45"/>
+
+              <!-- skirt (dynamic) -->
+              <path id="skirt" d="" fill="url(#skirtG)"/>
+              <path id="skirt2" d="" fill="url(#dots)"/>
+              <path id="band1" d="" fill="none" stroke="#f4bf45" stroke-width="4.5" stroke-linecap="round"/>
+              <path id="band2" d="" fill="none" stroke="#fff3c4" stroke-width="2" stroke-dasharray="3 5" stroke-linecap="round"/>
+
+              <!-- choli -->
+              <path d="M112 132 Q150 146 188 132 L194 176 Q150 196 106 176 Z" fill="url(#choliG)"/>
+              <path d="M108 178 Q150 200 192 178 L192 206 Q150 220 108 206 Z" fill="url(#choliG)"/>
+              <path d="M106 204 Q150 220 194 204" stroke="#f4bf45" stroke-width="5" fill="none"/>
+              <path d="M132 134 Q150 156 168 134" stroke="#fff3c4" stroke-width="2" fill="none"/>
+
+              <!-- arms (dynamic) -->
+              <path id="armL" d="" stroke="#f2b892" stroke-width="15" fill="none" stroke-linecap="round"/>
+              <path id="armR" d="" stroke="#f2b892" stroke-width="15" fill="none" stroke-linecap="round"/>
+              <circle cx="114" cy="140" r="12" fill="#4d9bff"/><circle cx="186" cy="140" r="12" fill="#4d9bff"/>
+              <circle id="handL" r="9" fill="#f7c4a0"/><circle id="handR" r="9" fill="#f7c4a0"/>
+              <ellipse id="bangL" rx="8" ry="3" fill="none" stroke="#f4bf45" stroke-width="3"/>
+              <ellipse id="bangR" rx="8" ry="3" fill="none" stroke="#f4bf45" stroke-width="3"/>
+
+              <!-- dupatta -->
+              <g class="flutter">
+                <path d="M114 128 Q80 170 82 250 Q84 290 96 320 Q110 300 108 250 Q110 190 132 150 Z" fill="url(#dupG)" stroke="#f4bf45" stroke-width="2"/>
+              </g>
+            </g>
+          </svg>
+
+          <div class="counter" id="counter">₹0</div>
+          <div class="status" id="status">REMOTE CONNECTED…</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Remote -->
+    <section aria-label="Remote control">
+      <div class="remote">
+        <div class="led" id="led" aria-hidden="true"></div>
+        <div class="rbrand">DESI REMOTE<br>TECHNOLOGIES™</div>
+
+        <button class="btn b-power" id="bPower" aria-pressed="false" aria-label="Power">⏻</button>
+        <button class="btn b-action" id="bAction" disabled>LAHANGA UTHA DEM!<small>Red button ka asli power</small></button>
+        <button class="btn b-react" id="bReact" disabled>AREY RUK JA!<small>Sab kuch rok do</small></button>
+        <button class="btn b-money" id="bMoney" disabled>MONEY FOLLOWS MY… REMOTE!<small>₹0 → ₹100 → ₹1000 → ₹∞</small></button>
+        <div class="toast" id="toast" role="status" aria-live="polite">Power dabao 👆</div>
+      </div>
+    </section>
+  </div>
+
+  <details id="setup" open>
+    <summary>🎧 Sound setup — apni audio files daalo</summary>
+    <div class="slot">
+      <label for="fSong">Song clip (2 baar bajegi)</label>
+      <input type="file" id="fSong" accept="audio/*"><span class="ok" id="okSong"></span>
+    </div>
+    <div class="slot">
+      <label for="fMoney">Money clip (lahanga niche aane ke baad)</label>
+      <input type="file" id="fMoney" accept="audio/*"><span class="ok" id="okMoney"></span>
+    </div>
+    <p class="hint">Original awaaz ki files yahan mere paas nahi hain, isliye apne phone/laptop se mp3 ya wav choose karo. File choose karte hi save ho jaati hai (isi browser mein). Bina file ke ek chhoti default beep-tune bajegi.</p>
+  </details>
+
+  <footer>Powered by Desi Technology™ · <b>100% Bakchodi • 0% Warranty</b><br>“Technology jo dil se kaam kare.”</footer>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const screenEl=$('screen'), statusEl=$('status'), toastEl=$('toast'), counterEl=$('counter'), led=$('led');
+  const bPower=$('bPower'), bAction=$('bAction'), bReact=$('bReact'), bMoney=$('bMoney');
+
+  /* ---------- girl drawing ---------- */
+  const NS='http://www.w3.org/2000/svg';
+  function hemPath(lx,rx,y,amp,n){
+    const step=(rx-lx)/n; let d='';
+    for(let i=0;i<n;i++){
+      const x=lx+i*step;
+      d+=` Q${(x+step/2).toFixed(1)} ${(y+amp*2).toFixed(1)} ${(x+step).toFixed(1)} ${y.toFixed(1)}`;
+    }
+    return d;
+  }
+  const el = id => $(id);
+  let lift=0, target=0, t0=performance.now();
+
+  // static petticoat
+  el('petti').setAttribute('d',
+    'M120 228 C104 290 88 345 80 394'+hemPath(80,220,394,4,10)+' C212 345 196 290 180 228 Z');
+
+  function render(now){
+    const t=(now-t0)/1000;
+    lift += (target-lift)*0.11;
+    if(Math.abs(target-lift)<0.001) lift=target;
+    const l=lift;
+    const hemY=386-l*24, inset=l*10, lx=58+inset, rx=242-inset, amp=5+l*3;
+    const hem=hemPath(lx,rx,hemY,amp,10);
+    const d=`M112 212 C100 262 ${lx+8} ${hemY-60} ${lx} ${hemY}${hem} C${rx-8} ${hemY-60} 200 262 188 212 Z`;
+    el('skirt').setAttribute('d',d); el('skirt2').setAttribute('d',d);
+    el('band1').setAttribute('d',`M${lx} ${hemY}${hem}`);
+    el('band2').setAttribute('d',`M${lx+4} ${hemY-11}${hemPath(lx+4,rx-4,hemY-11,amp*0.6,10)}`);
+    // arms: hands come to skirt edge and pinch it up a little
+    const hy=262-l*24, hx=98-l*2, hx2=300-hx;
+    el('armL').setAttribute('d',`M114 142 Q${hx-16} ${(142+hy)/2} ${hx} ${hy}`);
+    el('armR').setAttribute('d',`M186 142 Q${hx2+16} ${(142+hy)/2} ${hx2} ${hy}`);
+    [['handL',hx],['handR',hx2]].forEach(([id,x])=>{const h=el(id);h.setAttribute('cx',x);h.setAttribute('cy',hy)});
+    [['bangL',hx],['bangR',hx2]].forEach(([id,x])=>{const h=el(id);h.setAttribute('cx',x);h.setAttribute('cy',hy-11)});
+    // bigger smile while lifting
+    el('smile').setAttribute('d',`M141 100 Q150 ${108+l*4} 159 100`);
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+
+  /* ---------- audio ---------- */
+  const clips={song:null,money:null};
+  let cur=null, ctx=null;
+
+  function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('desi-remote-audio',1);r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
+  async function saveBlob(k,b){try{const d=await idb();d.transaction('f','readwrite').objectStore('f').put(b,k)}catch(e){}}
+  async function loadBlob(k){try{const d=await idb();return await new Promise(res=>{const q=d.transaction('f').objectStore('f').get(k);q.onsuccess=()=>res(q.result||null);q.onerror=()=>res(null)})}catch(e){return null}}
+
+  function setClip(kind,blob,name){
+    if(clips[kind]) URL.revokeObjectURL(clips[kind]);
+    clips[kind]=URL.createObjectURL(blob);
+    $(kind==='song'?'okSong':'okMoney').textContent='✓ '+(name||'saved');
+  }
+  [['song','fSong'],['money','fMoney']].forEach(([kind,id])=>{
+    $(id).addEventListener('change',e=>{
+      const f=e.target.files&&e.target.files[0]; if(!f) return;
+      setClip(kind,f,f.name); saveBlob(kind,f);
+    });
+    loadBlob(kind).then(b=>{ if(b) setClip(kind,b,'pehle se saved'); });
+  });
+
+  function audioCtx(){
+    if(!ctx){ const AC=window.AudioContext||window.webkitAudioContext; if(AC) ctx=new AC(); }
+    if(ctx&&ctx.state==='suspended') ctx.resume();
+    return ctx;
+  }
+  function stopAudio(){ if(cur){ const c=cur; cur=null; c.stop(); } }
+
+  function synth(kind,resolve){
+    const c=audioCtx(); if(!c){ const tm=setTimeout(resolve,1200); cur={stop(){clearTimeout(tm);resolve()}}; return; }
+    const notes = kind==='song'
+      ? [[523,.0],[659,.2],[784,.4],[659,.6],[880,.8],[784,1.0],[1047,1.2]]
+      : [[988,.0],[1319,.12],[988,.34],[1319,.46],[1568,.7]];
+    const dur = kind==='song' ? 1.65 : 1.2;
+    const oscs=[]; const now=c.currentTime+0.02;
+    notes.forEach(([f,s])=>{
+      const o=c.createOscillator(), g=c.createGain();
+      o.type = kind==='song' ? 'triangle' : 'square';
+      o.frequency.value=f;
+      g.gain.setValueAtTime(0,now+s);
+      g.gain.linearRampToValueAtTime(.16,now+s+.02);
+      g.gain.exponentialRampToValueAtTime(.001,now+s+(kind==='song'?.2:.16));
+      o.connect(g).connect(c.destination); o.start(now+s); o.stop(now+s+.24); oscs.push(o);
+    });
+    const tm=setTimeout(()=>{cur=null;resolve()},dur*1000);
+    cur={stop(){clearTimeout(tm);oscs.forEach(o=>{try{o.stop()}catch(e){}});resolve()}};
+  }
+
+  function playClip(kind){
+    return new Promise(resolve=>{
+      stopAudio();
+      const url=clips[kind];
+      if(!url){ synth(kind,resolve); return; }
+      const a=new Audio(url);
+      let done=false; const fin=()=>{ if(done) return; done=true; cur=null; resolve(); };
+      cur={stop(){ a.pause(); fin(); }};
+      a.onended=fin;
+      a.onerror=()=>{ done=true; cur=null; synth(kind,resolve); };
+      a.play().catch(()=>{ done=true; cur=null; synth(kind,resolve); });
+    });
+  }
+
+  /* ---------- UI helpers ---------- */
+  let powered=false, running=false, token=0;
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const setStatus=s=>statusEl.textContent=s;
+  const toast=s=>toastEl.textContent=s;
+  function pulse(){ led.classList.add('pulse'); setTimeout(()=>led.classList.remove('pulse'),140); }
+  function setEnabled(on){ [bAction,bReact,bMoney].forEach(b=>b.disabled=!on); }
+
+  function rain(){
+    for(let i=0;i<22;i++){
+      const c=document.createElement('div'); c.className='coin'; c.textContent='₹';
+      c.style.left=(4+Math.random()*90)+'%'; c.style.animationDelay=(Math.random()*.9)+'s';
+      screenEl.appendChild(c); setTimeout(()=>c.remove(),3200);
+    }
+  }
+  async function countUp(t){
+    const steps=['₹0','₹100','₹1000','₹∞'];
+    for(const s of steps){ if(t!==token) return; counterEl.textContent=s; await sleep(380); }
+  }
+
+  /* ---------- actions ---------- */
+  function halt(){ token++; running=false; stopAudio(); target=0; bAction.classList.remove('busy'); }
+
+  bPower.addEventListener('click',()=>{
+    audioCtx(); pulse();
+    if(!powered){
+      powered=true; screenEl.classList.remove('off'); bPower.classList.add('on'); bPower.setAttribute('aria-pressed','true');
+      setEnabled(true); setStatus('REMOTE CONNECTED… ON KAR DIYA!'); counterEl.textContent='₹0'; toast('Ab hara button dabao 😄');
+    } else {
+      halt(); powered=false; screenEl.classList.add('off'); bPower.classList.remove('on'); bPower.setAttribute('aria-pressed','false');
+      setEnabled(false); toast('Power dabao 👆');
+    }
+  });
+
+  bAction.addEventListener('click',async()=>{
+    if(!powered||running) return;
+    audioCtx(); pulse();
+    const t=++token; running=true; bAction.classList.add('busy'); counterEl.textContent='₹0';
+    toast('Remote activated 😂');
+    target=1;
+    for(let i=1;i<=2;i++){
+      setStatus(`🎶 Song chal raha hai (${i}/2)`);
+      await playClip('song'); if(t!==token) return;
+    }
+    target=0; setStatus('Lahanga wapas niche… 😌');
+    await sleep(800); if(t!==token) return;
+    setStatus('💸 MONEY FOLLOWS!'); rain(); countUp(t);
+    await playClip('money'); if(t!==token) return;
+    running=false; bAction.classList.remove('busy'); setStatus('REMOTE OVERHEATING! Hasna start karo 😂'); toast('Dobara dabao, kaun rok raha hai?');
+  });
+
+  bReact.addEventListener('click',()=>{
+    if(!powered) return; pulse();
+    halt(); setStatus('AREY RUK JA! 🛑'); toast('Ruk gaye. Phir se try karo.');
+    screenEl.classList.remove('shake'); void screenEl.offsetWidth; screenEl.classList.add('shake');
+  });
+
+  bMoney.addEventListener('click',async()=>{
+    if(!powered) return; audioCtx(); pulse();
+    halt(); const t=++token;
+    setStatus('💸 MONEY FOLLOWS MY REMOTE!'); rain(); countUp(t);
+    toast('Money follows my remote… 😂');
+    await playClip('money'); if(t!==token) return;
+    setStatus('Bas remote dabate raho!');
+  });
+})();
+</script>
+</body>
+</html>
